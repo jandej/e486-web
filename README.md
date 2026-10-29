@@ -2,6 +2,8 @@
 
 A 100% browser-based, dependency-free **Intel 80486DX2-66 PC, Motherboard & Modular ISA/VLB Adapter Card Emulator** written in pure ES6 JavaScript. Runs real unmodified **SeaBIOS**, **VGA BIOS**, **FreeDOS 1.3**, and classic DOS games (Commander Keen 4, Wolfenstein 3D, Duke Nukem II, DOOM) directly in the browser.
 
+**▶ Live demo:** <https://jandej.github.io/e486-web/>
+
 ---
 
 ## Screenshots
