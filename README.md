@@ -84,3 +84,15 @@ npm test
 ├── docs/screenshots/       # UI screenshots for documentation
 └── tests/                  # Node.js unit test suites
 ```
+
+## Credits & Acknowledgements
+
+- **[tiny386](https://github.com/hchunhui/tiny386)** by Chunhui He — Retro486's CPU core (`js/cpu_486.js`), system bus & chipset (`js/retro_bus.js`), FPU (`js/fpu_487.js`), VGA font (`js/vgafont.js`), IDE controller (`js/cards/multio_card.js`), and BIOS ROM loader (`js/bios_rom.js`) are pure JavaScript ports and adaptations of tiny386.
+- **Fabrice Bellard** — Original author of the VGA emulation (`vga.c`), IDE emulation (`ide.c`), and PIC/PIT interrupt/timer controllers from QEMU / TinyEMU, ported via tiny386.
+- **[SeaBIOS](https://www.seabios.org/)** — Open-source 16-bit x86 BIOS implementation used for system initialization.
+- **[FreeDOS](https://www.freedos.org/)** — Open-source DOS-compatible operating system.
+
+## License
+
+This project is licensed under the [BSD-3-Clause License](LICENSE). Portions derived from tiny386 are Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause). Portions derived from QEMU / TinyEMU are Copyright (c) 2003-2017 Fabrice Bellard (MIT). See the [LICENSE](LICENSE) file for complete details.
+

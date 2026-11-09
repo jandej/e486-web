@@ -3,6 +3,10 @@
  * 100% Pure JavaScript port of tiny386 ide.c (Dual ATA/ATAPI IDE Controller)
  * and misc.c EMULINK Floppy Controller (0xF1F0/0xF1F4 + 0x3F0-0x3F7)
  * supporting Drive A:, B: (Floppies), C:, D: (Hard Drives), and E: (ATAPI CD-ROM).
+ *
+ * Copyright (c) 2003-2016 Fabrice Bellard (MIT)
+ * Portions Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause)
+ * Portions Copyright (c) 2026 Jan de Jager
  */
 
 import { AdapterCard } from './adapter_card.js';

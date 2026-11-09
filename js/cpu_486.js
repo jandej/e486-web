@@ -1,6 +1,10 @@
 /**
  * Intel 80486DX2 Complete 32-Bit x86 Processor Emulator
  * 100% Pure JavaScript port of tiny386 (i386.c + i386ins.def) with integrated 80487 FPU.
+ *
+ * Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause)
+ * Portions Copyright (c) 2026 Jan de Jager
+ *
  * Supports Real Mode, Protected Mode, Virtual 8086 Mode, 32-bit Paging & TLB,
  * Hardware Task Switching, Lazy Flags, and the full 80386/80486/Pentium instruction set.
  */

@@ -1,6 +1,9 @@
 /**
  * IBM VGA 8x16 Hardware Character Generator ROM Font (Code Page 437)
  * Ported from tiny386 vgafont.c (256 glyphs * 16 rows)
+ *
+ * Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause)
+ * Portions Copyright (c) 2026 Jan de Jager
  */
 
 export const vgafont16 = new Uint8Array([

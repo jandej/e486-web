@@ -1,6 +1,11 @@
 /**
  * Retro486 System Bus & Motherboard Chipset
  * 100% Pure JavaScript port of tiny386 pc.c, i8259.c, i8254.c, i8042.c, pci.c, misc.c
+ *
+ * Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause)
+ * Portions Copyright (c) 2003-2017 Fabrice Bellard (MIT)
+ * Portions Copyright (c) 2026 Jan de Jager
+ *
  * Handles I/O dispatch (8/16/32-bit & string I/O), memory mapping, A20 gate,
  * dual 8259 PIC, 8254 PIT, 8237 DMA, CMOS RTC, 8042 PS/2 Keyboard & Mouse,
  * i440FX/PIIX3 PCI bus, SeaBIOS timer (0x3CC), and expansion slot management.

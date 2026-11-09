@@ -2,6 +2,9 @@
  * Intel 80487 Integrated x87 Floating-Point Unit (FPU)
  * 100% Pure JavaScript port of tiny386 fpu.c (80-bit extended precision float conversion,
  * register stack ST(0)-ST(7), control/status words, BCD, integer, and transcendental ops).
+ *
+ * Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause)
+ * Portions Copyright (c) 2026 Jan de Jager
  */
 
 const BIAS80 = 16383;

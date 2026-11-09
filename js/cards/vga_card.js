@@ -1,6 +1,11 @@
 /**
  * IBM VGA / Super VGA (Bochs VBE) Modular Video Card
- * 100% Pure JavaScript port of tiny386 vga.c (Fabrice Bellard)
+ * 100% Pure JavaScript port of tiny386 vga.c
+ *
+ * Copyright (c) 2003-2017 Fabrice Bellard
+ * Portions Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause)
+ * Portions Copyright (c) 2026 Jan de Jager
+ *
  * Features 256KB planar/chain-4/odd-even VRAM, Attribute/Sequencer/Graphics/CRTC controllers,
  * 256-color RAMDAC (0x3C6-0x3C9), Bochs VBE DISPI (0x1CE-0x1CF), hardware font planes & cursor.
  */
