@@ -1,6 +1,6 @@
 {
   "name": "retro486-web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Standalone 100% Pure-JavaScript Intel 80486DX2 PC, Motherboard, and Modular ISA/VLB Adapter Card Emulator",
   "type": "module",
   "scripts": {
