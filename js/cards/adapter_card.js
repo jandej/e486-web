@@ -139,4 +139,29 @@ export class AdapterCard {
             bracketConnectors: ['DB-9', 'RCA Audio']
         };
     }
+
+    /**
+     * Snapshot card state for emulator save states.
+     */
+    saveState() {
+        return {
+            id: this.id,
+            jumpers: Object.assign({}, this.jumpers),
+            dipSwitches: Object.assign({}, this.dipSwitches)
+        };
+    }
+
+    /**
+     * Restore card state from snapshot.
+     */
+    loadState(state) {
+        if (!state) return;
+        if (state.jumpers) {
+            Object.assign(this.jumpers, state.jumpers);
+            this.applyJumpers();
+        }
+        if (state.dipSwitches) {
+            Object.assign(this.dipSwitches, state.dipSwitches);
+        }
+    }
 }

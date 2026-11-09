@@ -76,6 +76,56 @@ export class MonitorView {
                 if (bezel.requestFullscreen) bezel.requestFullscreen();
             });
         }
+
+        // Instant Save States Controls
+        const slotSelect = document.getElementById('select-savestate-slot');
+        const btnQuickSave = document.getElementById('btn-quicksave');
+        if (btnQuickSave) {
+            btnQuickSave.addEventListener('click', () => {
+                const slot = parseInt(slotSelect ? slotSelect.value : 1, 10);
+                this.app.saveStateManager.saveQuickSlot(slot);
+            });
+        }
+
+        const btnQuickLoad = document.getElementById('btn-quickload');
+        if (btnQuickLoad) {
+            btnQuickLoad.addEventListener('click', () => {
+                const slot = parseInt(slotSelect ? slotSelect.value : 1, 10);
+                this.app.saveStateManager.loadQuickSlot(slot);
+            });
+        }
+
+        const btnExport = document.getElementById('btn-export-state');
+        if (btnExport) {
+            btnExport.addEventListener('click', () => {
+                const slot = parseInt(slotSelect ? slotSelect.value : 1, 10);
+                this.app.saveStateManager.exportSnapshotToFile(slot);
+            });
+        }
+
+        const btnImport = document.getElementById('btn-import-state');
+        const fileInput = document.getElementById('input-import-state');
+        if (btnImport && fileInput) {
+            btnImport.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    this.app.saveStateManager.importSnapshotFromFile(e.target.files[0]);
+                    fileInput.value = '';
+                }
+            });
+        }
+
+        window.addEventListener('retro486-savestates-updated', (ev) => {
+            if (!slotSelect) return;
+            const slots = ev.detail.slots;
+            for (let i = 0; i < 5; i++) {
+                const opt = slotSelect.options[i];
+                if (opt) {
+                    const s = slots[i];
+                    opt.textContent = s ? `Slot ${i + 1} (${s.dateStr})` : `Slot ${i + 1} (Empty)`;
+                }
+            }
+        });
     }
 
     initKeyMapping() {
@@ -115,6 +165,22 @@ export class MonitorView {
             const monitorTab = document.getElementById('tab-monitor');
             if (monitorTab && !monitorTab.classList.contains('active')) return;
             if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+            // Instant Save State Hotkeys: Shift+F6 (Save), Shift+F9 (Load)
+            if ((e.code === 'F6' && (e.shiftKey || e.ctrlKey))) {
+                e.preventDefault();
+                const slotSelect = document.getElementById('select-savestate-slot');
+                const slot = parseInt(slotSelect ? slotSelect.value : 1, 10);
+                this.app.saveStateManager.saveQuickSlot(slot);
+                return;
+            }
+            if ((e.code === 'F9' && (e.shiftKey || e.ctrlKey))) {
+                e.preventDefault();
+                const slotSelect = document.getElementById('select-savestate-slot');
+                const slot = parseInt(slotSelect ? slotSelect.value : 1, 10);
+                this.app.saveStateManager.loadQuickSlot(slot);
+                return;
+            }
 
             const sc = this.keyMap[e.code];
             if (sc !== undefined) {

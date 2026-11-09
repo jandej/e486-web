@@ -101,8 +101,28 @@
                     </div>
                 </div>
 
+                <!-- Instant Save States Bar -->
+                <div class="save-state-strip" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; align-items:center; background:#121722; padding:8px 16px; border-radius:6px; border:1px solid #233044; margin-top:10px;">
+                    <span style="font-size:12px; font-weight:bold; color:var(--accent-cyan); display:flex; align-items:center; gap:5px;">
+                        <span>💾</span> Instant Save States:
+                    </span>
+                    <select id="select-savestate-slot" class="retro-select" style="padding:4px 8px; font-size:12px;">
+                        <option value="1">Slot 1 (Quick Slot)</option>
+                        <option value="2">Slot 2</option>
+                        <option value="3">Slot 3</option>
+                        <option value="4">Slot 4</option>
+                        <option value="5">Slot 5</option>
+                    </select>
+                    <button id="btn-quicksave" class="btn-accent" title="Save emulator state to selected slot (Shift+F6)">💾 Save State</button>
+                    <button id="btn-quickload" title="Load emulator state from selected slot (Shift+F9)">⚡ Load State</button>
+                    <button id="btn-export-state" class="btn-small" title="Export state to .r486state file">📥 Export</button>
+                    <input type="file" id="input-import-state" accept=".r486state,.json" style="display:none;">
+                    <button id="btn-import-state" class="btn-small" title="Import .r486state file">📂 Import</button>
+                    <span id="savestate-status-text" style="font-size:11px; color:var(--text-muted); margin-left:4px;">Hotkeys: Shift+F6 Save | Shift+F9 Load</span>
+                </div>
+
                 <!-- Quick Keyboard & Action Bar -->
-                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; align-items:center;">
+                <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; align-items:center; margin-top:10px;">
                     <span style="font-size:11px; color:var(--text-muted);">Quick Keys & DOS Commands:</span>
                     <button class="btn-small" onclick="window.retro486App.typeDosText('a:\n');">A:</button>
                     <button class="btn-small" onclick="window.retro486App.typeDosText('b:\n');">B:</button>

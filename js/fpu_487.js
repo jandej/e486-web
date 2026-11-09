@@ -200,6 +200,37 @@ export class FPU {
         this.top = (sw >>> 11) & 7;
     }
 
+    saveState() {
+        return {
+            cw: this.cw,
+            sw: this.sw,
+            top: this.top,
+            st: Array.from(this.st),
+            rawst: this.rawst.map(r => ({ mant0: r.mant0, mant1: r.mant1, high: r.high })),
+            rawtagr: this.rawtagr,
+            rawtagw: this.rawtagw
+        };
+    }
+
+    loadState(state) {
+        if (!state) return;
+        this.cw = state.cw;
+        this.sw = state.sw;
+        this.top = state.top;
+        if (state.st) {
+            for (let i = 0; i < 8; i++) this.st[i] = state.st[i];
+        }
+        if (state.rawst) {
+            for (let i = 0; i < 8; i++) {
+                this.rawst[i].mant0 = state.rawst[i].mant0;
+                this.rawst[i].mant1 = state.rawst[i].mant1;
+                this.rawst[i].high = state.rawst[i].high;
+            }
+        }
+        this.rawtagr = state.rawtagr;
+        this.rawtagw = state.rawtagw;
+    }
+
     fpget(i) {
         const idx = (this.top + i) & 7;
         const mask = 1 << idx;

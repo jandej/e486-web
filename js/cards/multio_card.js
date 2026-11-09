@@ -1422,4 +1422,25 @@ export class MultiIOCard extends AdapterCard {
             bracketConnectors: ['DB-9 COM1', 'DB-25 LPT1', 'DB-15 GAME']
         };
     }
+
+    saveState() {
+        return {
+            id: this.id,
+            jumpers: Object.assign({}, this.jumpers),
+            drives: {
+                fddA: { mounted: this.drives.fddA.mounted, name: this.drives.fddA.name, writeProtected: this.drives.fddA.writeProtected },
+                fddB: { mounted: this.drives.fddB.mounted, name: this.drives.fddB.name, writeProtected: this.drives.fddB.writeProtected },
+                hddC: { mounted: this.drives.hddC.mounted, name: this.drives.hddC.name, cylinders: this.drives.hddC.cylinders, heads: this.drives.hddC.heads, sectors: this.drives.hddC.sectors },
+                hddD: { mounted: this.drives.hddD.mounted, name: this.drives.hddD.name, cylinders: this.drives.hddD.cylinders, heads: this.drives.hddD.heads, sectors: this.drives.hddD.sectors }
+            }
+        };
+    }
+
+    loadState(state) {
+        if (!state) return;
+        if (state.jumpers) {
+            Object.assign(this.jumpers, state.jumpers);
+            this.applyJumpers();
+        }
+    }
 }

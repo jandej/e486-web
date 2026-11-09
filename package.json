@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "python3 -m http.server 8080",
-    "test": "node tests/test_cpu_486.js && node tests/test_adapter_cards.js && node tests/test_storage.js"
+    "test": "node tests/test_cpu_486.js && node tests/test_adapter_cards.js && node tests/test_storage.js && node tests/test_gameport.js && node tests/test_mpu401_synth.js && node tests/test_save_state.js"
   },
   "keywords": [
     "80486",

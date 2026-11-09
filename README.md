@@ -42,11 +42,16 @@ A 100% browser-based, dependency-free **Intel 80486DX2-66 PC, Motherboard & Modu
   - **SVGA / Bochs VBE Display Card (`vga_card.js`)**: Text modes (`03h`), CGA (`04h`/`06h`), EGA/VGA Planar 16-color (`0Dh`/`0Eh`/`10h`/`12h`) with hardware Pel Panning & Split-Screen `LINE_COMPARE`, Mode 13h (`320x200x256`), Mode-X, and VBE LFB
   - **EGA 64-Color Planar Card (`ega_card.js`)** & **CGA Card (`cga_card.js`)**
   - **SoundBlaster 16 + AdLib OPL3 Card (`soundblaster_card.js`)**: WebAudio synthesis, DSP DMA playback, configurable IRQ/DMA/Port jumpers
-  - **Roland MPU-401 MIDI Interface Card (`mpu401_card.js`)**: UART-mode MIDI interface (`0x330`/`0x331`, IRQ 9) with Web MIDI API / software synth routing
+  - **Roland MPU-401 MIDI Interface Card + Built-In SC-55 Synth (`mpu401_card.js`)**: UART-mode MIDI interface (`0x330`/`0x331`, IRQ 9) with built-in 16-channel polyphonic General MIDI WebAudio synthesizer (instruments, Channel 10 drums, pitch bend, expression, sustain) and Web MIDI API hardware routing
+  - **CH Products / Gravis ISA Gameport Card (`gameport_card.js`)**: Standard IBM PC Game Control Adapter (Port `0x201`) with NE558 quad timer RC circuit emulation, dual DB-15 joystick ports, and HTML5 Gamepad API controller support
   - **Novell NE2000 Ethernet Card (`ne2000_card.js`)**: 16-bit ISA Ethernet adapter (`0x300`, IRQ 9) with DP8390 controller & 16KB packet buffer
   - **Internal PC Speaker Subsystem (`pcspeaker_card.js`)**: PIT Channel 2 and Port `0x61` square-wave sound synthesizer
   - **Multi-I/O Storage Controller (`multio_card.js`)**: Dual-channel ATA/ATAPI IDE (`C:`, `D:`, `E:` CD-ROM) + `EMULINK` Floppy Controller (`A:`, `B:`)
   - **Port 80h POST Diagnostic Card (`post_card.js`)** & live **In-Browser Custom JS Card SDK**
+- **Instant Save States & Snapshot Engine (`js/save_state_manager.js`)**
+  - Freeze-frame state captures of the 80486 CPU (registers, segments, CR0-CR3, flags, TLB, x87 FPU), 16MB/64MB physical RAM, motherboard chipset (PIC, PIT, DMA, CMOS, KBC, Serial UART), and all installed modular cards (VGA/VBE VRAM, SoundBlaster, MPU-401, Gameport)
+  - Quick-Save (`Shift+F6`) and Quick-Load (`Shift+F9`) for Slots 1–5 with on-screen CRT OSD notification banner
+  - Full `.r486state` snapshot file export and import for sharing game saves and machine states
 - **Browser Persistence (`js/storage_cache.js`)**
   - Automatically caches ROMs, floppy images, custom uploaded `.img`/`.iso` files, and dirty DOS disk writes in browser `IndexedDB` + `localStorage`
   - Persists hardware setup (RAM size, CPU speed, CRT bezel effects, installed slot cards, and mounted drives) across browser reloads

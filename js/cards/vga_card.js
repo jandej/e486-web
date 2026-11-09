@@ -1139,4 +1139,75 @@ export class VgaCard extends AdapterCard {
             bracketConnectors: ['HD-15 VGA (Analog 15-pin)']
         };
     }
+
+    saveState() {
+        return {
+            id: this.id,
+            jumpers: Object.assign({}, this.jumpers),
+            vga_ram: this.vga_ram.slice(),
+            sr_index: this.sr_index,
+            sr: Array.from(this.sr),
+            gr_index: this.gr_index,
+            gr: Array.from(this.gr),
+            ar_index: this.ar_index,
+            ar: Array.from(this.ar),
+            ar_flip_flop: this.ar_flip_flop,
+            cr_index: this.cr_index,
+            cr: Array.from(this.cr),
+            msr: this.msr,
+            fcr: this.fcr,
+            st00: this.st00,
+            st01: this.st01,
+            dac_state: this.dac_state,
+            dac_sub_index: this.dac_sub_index,
+            dac_read_index: this.dac_read_index,
+            dac_write_index: this.dac_write_index,
+            palette: Array.from(this.palette),
+            dacPalette: Array.from(this.dacPalette),
+            bank_offset: this.bank_offset,
+            latch: this.latch,
+            graphic_mode: this.graphic_mode,
+            vbe_index: this.vbe_index,
+            vbe_regs: Array.from(this.vbe_regs)
+        };
+    }
+
+    loadState(state) {
+        if (!state) return;
+        if (state.vga_ram) {
+            if (state.vga_ram instanceof Uint8Array) {
+                this.vga_ram.set(state.vga_ram);
+            } else if (Array.isArray(state.vga_ram)) {
+                this.vga_ram.set(new Uint8Array(state.vga_ram));
+            }
+        }
+        this.sr_index = state.sr_index;
+        if (state.sr) this.sr.set(state.sr);
+        this.gr_index = state.gr_index;
+        if (state.gr) this.gr.set(state.gr);
+        this.ar_index = state.ar_index;
+        if (state.ar) this.ar.set(state.ar);
+        this.ar_flip_flop = state.ar_flip_flop;
+        this.cr_index = state.cr_index;
+        if (state.cr) this.cr.set(state.cr);
+        this.msr = state.msr;
+        this.fcr = state.fcr;
+        this.st00 = state.st00;
+        this.st01 = state.st01;
+        this.dac_state = state.dac_state;
+        this.dac_sub_index = state.dac_sub_index;
+        this.dac_read_index = state.dac_read_index;
+        this.dac_write_index = state.dac_write_index;
+        if (state.palette) this.palette.set(state.palette);
+        if (state.dacPalette) this.dacPalette.set(state.dacPalette);
+        this.bank_offset = state.bank_offset;
+        this.latch = state.latch;
+        this.graphic_mode = state.graphic_mode;
+        this.vbe_index = state.vbe_index;
+        if (state.vbe_regs) this.vbe_regs.set(state.vbe_regs);
+        if (state.jumpers) {
+            Object.assign(this.jumpers, state.jumpers);
+            this.applyJumpers();
+        }
+    }
 }

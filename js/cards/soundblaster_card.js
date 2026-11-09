@@ -261,4 +261,35 @@ export class SoundBlasterCard extends AdapterCard {
             bracketConnectors: ['Line Out', 'Mic In', 'DA-15 MIDI/Gameport']
         };
     }
+
+    saveState() {
+        return {
+            id: this.id,
+            jumpers: Object.assign({}, this.jumpers),
+            dspReset: this.dspReset,
+            dspSampleRate: this.dspSampleRate,
+            dspBlockSize: this.dspBlockSize,
+            dspSpeakerOn: this.dspSpeakerOn,
+            mixerIndex: this.mixerIndex,
+            mixerRegs: Array.from(this.mixerRegs),
+            oplIndex: this.oplIndex,
+            oplRegs: Array.from(this.oplRegs)
+        };
+    }
+
+    loadState(state) {
+        if (!state) return;
+        this.dspReset = state.dspReset;
+        this.dspSampleRate = state.dspSampleRate || 22050;
+        this.dspBlockSize = state.dspBlockSize || 0;
+        this.dspSpeakerOn = !!state.dspSpeakerOn;
+        this.mixerIndex = state.mixerIndex || 0;
+        if (state.mixerRegs) this.mixerRegs.set(state.mixerRegs);
+        this.oplIndex = state.oplIndex || 0;
+        if (state.oplRegs) this.oplRegs.set(state.oplRegs);
+        if (state.jumpers) {
+            Object.assign(this.jumpers, state.jumpers);
+            this.applyJumpers();
+        }
+    }
 }

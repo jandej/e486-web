@@ -365,6 +365,85 @@ export class Cpu486 {
         if (this.fpu) this.fpu.reset();
     }
 
+    saveState() {
+        return {
+            regs: Array.from(this.regs),
+            segments: Array.from(this.segments),
+            seg: this.seg.map(s => ({ sel: s.sel, base: s.base, limit: s.limit, flags: s.flags })),
+            idt: { base: this.idt.base, limit: this.idt.limit },
+            gdt: { base: this.gdt.base, limit: this.gdt.limit },
+            cr0: this.cr0,
+            cr2: this.cr2,
+            cr3: this.cr3,
+            dr: Array.from(this.dr),
+            ip: this.ip,
+            next_ip: this.next_ip,
+            flags: this.cpu_getflags(),
+            cpl: this.cpl,
+            code16: this.code16,
+            sp_mask: this.sp_mask,
+            halt: this.halt,
+            cycle: this.cycle,
+            intr: this.intr,
+            sysenter: { cs: this.sysenter.cs, eip: this.sysenter.eip, esp: this.sysenter.esp },
+            fpu: this.fpu ? this.fpu.saveState() : null
+        };
+    }
+
+    loadState(state) {
+        if (!state) return;
+        if (state.regs) {
+            for (let i = 0; i < 8; i++) this.regs[i] = state.regs[i] >>> 0;
+        }
+        if (state.segments) {
+            for (let i = 0; i < 8; i++) this.segments[i] = state.segments[i] & 0xffff;
+        }
+        if (state.seg) {
+            for (let i = 0; i < 8; i++) {
+                this.seg[i].sel = state.seg[i].sel;
+                this.seg[i].base = state.seg[i].base;
+                this.seg[i].limit = state.seg[i].limit;
+                this.seg[i].flags = state.seg[i].flags;
+            }
+        }
+        if (state.idt) {
+            this.idt.base = state.idt.base;
+            this.idt.limit = state.idt.limit;
+        }
+        if (state.gdt) {
+            this.gdt.base = state.gdt.base;
+            this.gdt.limit = state.gdt.limit;
+        }
+        this.cr0 = state.cr0 >>> 0;
+        this.cr2 = state.cr2 >>> 0;
+        this.cr3 = state.cr3 >>> 0;
+        if (state.dr) {
+            for (let i = 0; i < 8; i++) this.dr[i] = state.dr[i] >>> 0;
+        }
+        this.ip = state.ip >>> 0;
+        this.next_ip = state.next_ip >>> 0;
+        this.cc_mask = 0;
+        this.cc_op = 0;
+        this.flags = state.flags >>> 0;
+        this.cpl = state.cpl;
+        this.code16 = !!state.code16;
+        this.sp_mask = state.sp_mask;
+        this.halt = !!state.halt;
+        this.cycle = state.cycle || 0;
+        this.intr = !!state.intr;
+        if (state.sysenter) {
+            this.sysenter.cs = state.sysenter.cs;
+            this.sysenter.eip = state.sysenter.eip;
+            this.sysenter.esp = state.sysenter.esp;
+        }
+        this.ifetch_laddr = 0xffffffff;
+        this.ifetch_paddr = 0;
+        this.tlb_clear();
+        if (this.fpu && state.fpu) {
+            this.fpu.loadState(state.fpu);
+        }
+    }
+
     resetPm(startAddr) {
         this.reset();
         this.cr0 = 1 | (this.fpu ? 0x10 : 0);

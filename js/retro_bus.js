@@ -1795,4 +1795,101 @@ export class RetroBus {
             if (this.busActivity.dmaStates[i] > 0) this.busActivity.dmaStates[i]--;
         }
     }
+
+    saveState() {
+        return {
+            a20Enabled: this.a20Enabled,
+            ram: this.ram.slice(),
+            postCode: this.busActivity.postCode,
+            pics: this.pics.map(p => ({
+                last_irr: p.last_irr,
+                irr: p.irr,
+                imr: p.imr,
+                isr: p.isr,
+                priority_add: p.priority_add,
+                irq_base: p.irq_base,
+                read_reg_select: p.read_reg_select,
+                poll: p.poll,
+                special_mask: p.special_mask,
+                init_state: p.init_state,
+                auto_eoi: p.auto_eoi,
+                rotate_on_auto_eoi: p.rotate_on_auto_eoi,
+                special_fully_nested_mode: p.special_fully_nested_mode,
+                init4: p.init4,
+                single_mode: p.single_mode
+            })),
+            pit: {
+                port61Val: this.pit.port61Val,
+                channels: this.pit.channels.map(ch => ({
+                    count: ch.count,
+                    latched_count: ch.latched_count,
+                    count_latched: ch.count_latched,
+                    status_latched: ch.status_latched,
+                    status: ch.status,
+                    read_state: ch.read_state,
+                    write_state: ch.write_state,
+                    write_latch: ch.write_latch,
+                    rw_mode: ch.rw_mode,
+                    mode: ch.mode,
+                    bcd: ch.bcd,
+                    gate: ch.gate,
+                    count_load_time: ch.count_load_time,
+                    last_irq_count: ch.last_irq_count,
+                    irq: ch.irq
+                }))
+            },
+            cmos: {
+                idx: this.cmos.idx,
+                nvram: Array.from(this.cmos.nvram)
+            },
+            kbc: {
+                write_cmd: this.kbc.write_cmd,
+                status: this.kbc.status,
+                mode: this.kbc.mode,
+                pending: this.kbc.pending
+            },
+            serial: Object.assign({}, this.serial)
+        };
+    }
+
+    loadState(state) {
+        if (!state) return;
+        this.a20Enabled = state.a20Enabled !== undefined ? !!state.a20Enabled : true;
+        if (state.ram) {
+            if (state.ram instanceof Uint8Array) {
+                this.ram.set(state.ram);
+            } else if (Array.isArray(state.ram)) {
+                this.ram.set(new Uint8Array(state.ram));
+            }
+        }
+        if (state.postCode !== undefined) {
+            this.busActivity.postCode = state.postCode;
+        }
+        if (state.pics && Array.isArray(state.pics)) {
+            state.pics.forEach((p, idx) => {
+                if (this.pics[idx]) Object.assign(this.pics[idx], p);
+            });
+        }
+        if (state.pit) {
+            this.pit.port61Val = state.pit.port61Val || 0;
+            if (state.pit.channels && Array.isArray(state.pit.channels)) {
+                state.pit.channels.forEach((ch, idx) => {
+                    if (this.pit.channels[idx]) Object.assign(this.pit.channels[idx], ch);
+                });
+            }
+        }
+        if (state.cmos) {
+            this.cmos.idx = state.cmos.idx || 0;
+            if (state.cmos.nvram) this.cmos.nvram.set(state.cmos.nvram);
+        }
+        if (state.kbc) {
+            this.kbc.write_cmd = state.kbc.write_cmd || 0;
+            this.kbc.status = state.kbc.status || 0;
+            this.kbc.mode = state.kbc.mode || 0;
+            this.kbc.pending = state.kbc.pending || 0;
+        }
+        if (state.serial) {
+            Object.assign(this.serial, state.serial);
+        }
+    }
 }

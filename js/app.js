@@ -22,6 +22,8 @@ import { MultiIOCard } from './cards/multio_card.js';
 import { PostDiagnosticCard } from './cards/post_card.js';
 import { Mpu401Card } from './cards/mpu401_card.js';
 import { Ne2000Card } from './cards/ne2000_card.js';
+import { GameportCard } from './cards/gameport_card.js';
+import { SaveStateManager } from './save_state_manager.js';
 
 import { MonitorView } from './ui/monitor_view.js';
 import { MotherboardView } from './ui/motherboard_view.js';
@@ -43,6 +45,8 @@ export class Retro486App {
         this.customCardsCatalog = [];
         this.activeVideoCard = null;
         this.paused = true; // Unpaused once BIOS & boot images finish loading
+
+        this.saveStateManager = new SaveStateManager(this);
         this.cyclesPerFrame = 120000;
 
         this.installDefaultMotherboardCards();
@@ -108,8 +112,9 @@ export class Retro486App {
             { typeId: 'ega', name: 'IBM Enhanced Graphics Adapter (EGA 256KB)', slotType: 'ISA-8', category: 'Video' },
             { typeId: 'cga', name: 'IBM Color Graphics Adapter (CGA 16KB)', slotType: 'ISA-8', category: 'Video' },
             { typeId: 'sb16', name: 'Creative SoundBlaster 16 (DSP + OPL3)', slotType: 'ISA-16', category: 'Audio' },
-            { typeId: 'mpu401', name: 'Roland MPU-401 MIDI Interface', slotType: 'ISA-8', category: 'Audio' },
+            { typeId: 'mpu401', name: 'Roland MPU-401 MIDI Interface + SC-55 Synth', slotType: 'ISA-8', category: 'Audio' },
             { typeId: 'pcspeaker', name: 'IBM PC Internal Speaker Module', slotType: 'ISA-8', category: 'Audio' },
+            { typeId: 'gameport', name: 'CH Products / Gravis ISA Gameport (Port 0x201)', slotType: 'ISA-8', category: 'Input' },
             { typeId: 'multio', name: 'GoldStar Prime 2C Multi-I/O (IDE/Floppy)', slotType: 'ISA-16', category: 'Storage' },
             { typeId: 'ne2000', name: 'Novell NE2000 Ethernet Adapter (10BASE-T)', slotType: 'ISA-16', category: 'Network' },
             { typeId: 'post', name: 'ISA Dual 7-Segment POST Diagnostic Card', slotType: 'ISA-8', category: 'Diagnostic' }
@@ -134,6 +139,7 @@ export class Retro486App {
             case 'sb16': card = new SoundBlasterCard(); break;
             case 'mpu401': card = new Mpu401Card(); break;
             case 'pcspeaker': card = new PcSpeakerCard(); break;
+            case 'gameport': card = new GameportCard(); break;
             case 'multio': card = new MultiIOCard(); break;
             case 'ne2000': card = new Ne2000Card(); break;
             case 'post': card = new PostDiagnosticCard(); break;
