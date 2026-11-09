@@ -1,6 +1,6 @@
 /**
  * Intel 80486DX2 Complete 32-Bit x86 Processor Emulator
- * 100% Pure JavaScript port of tiny386 (i386.c + i386ins.def) with integrated 80487 FPU.
+ * 100% Pure JavaScript port of tiny386 (i386.c + i386ins.def) with integrated x87 FPU.
  *
  * Copyright (c) 2024-2025 Chunhui He (BSD-3-Clause)
  * Portions Copyright (c) 2026 Jan de Jager

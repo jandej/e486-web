@@ -27,11 +27,11 @@ A 100% browser-based, dependency-free **Intel 80486DX2-66 PC, Motherboard & Modu
 
 ## Features
 
-- **Full Intel 80486DX2 CPU + 80487 FPU (`js/cpu_486.js`, `js/fpu_487.js`)**
+- **Full Intel 80486DX2 CPU with Integrated FPU (`js/cpu_486.js`, `js/fpu_487.js`)**
   - Real Mode, 16/32-bit Protected Mode, Virtual 8086 (V86) Mode
-  - 32-bit Demand Paging (`CR0.PG`, `CR3`) with 4096-entry hardware TLB
+  - 32-bit Demand Paging (`CR0.PG`, `CR3`) with 512-entry hardware TLB
   - Hardware Task Switching (`TSS`), `CPUID`, `BSWAP`, `CMPXCHG`, `XADD`, `INVLPG`
-  - Integrated x87 Floating-Point Unit (`FPU487`)
+  - Integrated x87 Floating-Point Unit (`FPU`)
 - **AT / i440FX Motherboard & Chipset (`js/retro_bus.js`, `js/bios_rom.js`)**
   - Dual 8259A Programmable Interrupt Controllers (Master/Slave PIC)
   - 8254 Programmable Interval Timer (PIT Channels 0, 1, 2 + PC Speaker + SeaBIOS PM Timer `0x3CC`)
@@ -42,6 +42,9 @@ A 100% browser-based, dependency-free **Intel 80486DX2-66 PC, Motherboard & Modu
   - **SVGA / Bochs VBE Display Card (`vga_card.js`)**: Text modes (`03h`), CGA (`04h`/`06h`), EGA/VGA Planar 16-color (`0Dh`/`0Eh`/`10h`/`12h`) with hardware Pel Panning & Split-Screen `LINE_COMPARE`, Mode 13h (`320x200x256`), Mode-X, and VBE LFB
   - **EGA 64-Color Planar Card (`ega_card.js`)** & **CGA Card (`cga_card.js`)**
   - **SoundBlaster 16 + AdLib OPL3 Card (`soundblaster_card.js`)**: WebAudio synthesis, DSP DMA playback, configurable IRQ/DMA/Port jumpers
+  - **Roland MPU-401 MIDI Interface Card (`mpu401_card.js`)**: UART-mode MIDI interface (`0x330`/`0x331`, IRQ 9) with Web MIDI API / software synth routing
+  - **Novell NE2000 Ethernet Card (`ne2000_card.js`)**: 16-bit ISA Ethernet adapter (`0x300`, IRQ 9) with DP8390 controller & 16KB packet buffer
+  - **Internal PC Speaker Subsystem (`pcspeaker_card.js`)**: PIT Channel 2 and Port `0x61` square-wave sound synthesizer
   - **Multi-I/O Storage Controller (`multio_card.js`)**: Dual-channel ATA/ATAPI IDE (`C:`, `D:`, `E:` CD-ROM) + `EMULINK` Floppy Controller (`A:`, `B:`)
   - **Port 80h POST Diagnostic Card (`post_card.js`)** & live **In-Browser Custom JS Card SDK**
 - **Browser Persistence (`js/storage_cache.js`)**
@@ -69,25 +72,31 @@ npm test
 
 ```text
 ├── index.html              # Main Retro486 Pro Hardware Lab UI
+├── package.json            # Project manifest, npm start & test scripts
+├── LICENSE                 # BSD-3-Clause license and third-party notices
 ├── css/                    # CRT monitor, motherboard & storage bay styling
 ├── js/
 │   ├── app.js              # Main emulator coordinator & UI bindings
-│   ├── cpu_486.js          # Intel 80486DX2 CPU core (Real/PM/V86/Paging)
-│   ├── fpu_487.js          # 80487 x87 Floating-Point Unit
-│   ├── retro_bus.js        # System bus, PIC, PIT, DMA, CMOS, 8042, PCI
+│   ├── audio_engine.js     # Web Audio manager (SoundBlaster DSP, OPL3, PC speaker)
 │   ├── bios_rom.js         # SeaBIOS & VGA BIOS loader + fallback ROM
+│   ├── cards/              # Modular ISA/VLB expansion cards (VGA, SB16, NE2000, MPU-401...)
+│   ├── cpu_486.js          # Intel 80486DX2 CPU core (Real/PM/V86/Paging)
+│   ├── crt_renderer.js     # CRT monitor shader & scanline renderer
+│   ├── fpu_487.js          # Integrated x87 Floating-Point Unit (FPU)
+│   ├── retro_bus.js        # System bus, PIC, PIT, DMA, CMOS, 8042, PCI
 │   ├── storage_cache.js    # IndexedDB + localStorage persistence engine
-│   ├── cards/              # Modular ISA/VLB expansion cards
-│   └── ui/                 # Motherboard, Storage Bay & Card Editor views
+│   ├── ui/                 # Motherboard, Storage Bay & Card Editor views
+│   └── vgafont.js          # IBM VGA 8x16 Code Page 437 bitmap font
 ├── data/                   # SeaBIOS (bios.bin), VGA BIOS (vgabios.bin), FreeDOS 1.3 (dos.img)
 ├── extra_disks/            # Pre-bundled 1.44MB DOS game & utility floppy images
+├── projects/               # Sample projects & add-ons
 ├── docs/screenshots/       # UI screenshots for documentation
 └── tests/                  # Node.js unit test suites
 ```
 
 ## Credits & Acknowledgements
 
-- **[tiny386](https://github.com/hchunhui/tiny386)** by Chunhui He — Retro486's CPU core (`js/cpu_486.js`), system bus & chipset (`js/retro_bus.js`), FPU (`js/fpu_487.js`), VGA font (`js/vgafont.js`), IDE controller (`js/cards/multio_card.js`), and BIOS ROM loader (`js/bios_rom.js`) are pure JavaScript ports and adaptations of tiny386.
+- **[tiny386](https://github.com/hchunhui/tiny386)** by Chunhui He — Retro486's CPU core (`js/cpu_486.js`), system bus & chipset (`js/retro_bus.js`), integrated FPU (`js/fpu_487.js`), VGA font (`js/vgafont.js`), IDE controller (`js/cards/multio_card.js`), and BIOS ROM loader (`js/bios_rom.js`) are pure JavaScript ports and adaptations of tiny386.
 - **Fabrice Bellard** — Original author of the VGA emulation (`vga.c`), IDE emulation (`ide.c`), and PIC/PIT interrupt/timer controllers from QEMU / TinyEMU, ported via tiny386.
 - **[SeaBIOS](https://www.seabios.org/)** — Open-source 16-bit x86 BIOS implementation used for system initialization.
 - **[FreeDOS](https://www.freedos.org/)** — Open-source DOS-compatible operating system.

@@ -1,6 +1,6 @@
 /**
  * Retro486 Main Application Bootstrapper
- * Coordinates the 100% Pure-JS Intel 80486DX2 CPU + 80487 FPU, System Bus,
+ * Coordinates the 100% Pure-JS Intel 80486DX2 CPU with Integrated FPU, System Bus,
  * SeaBIOS + VGA BIOS execution, Modular Adapter Cards, CRT Monitor,
  * Interactive Motherboard View, Storage Bay, Custom Card Studio,
  * and Browser Persistence (localStorage + IndexedDB).
